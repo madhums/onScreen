@@ -1,7 +1,18 @@
-(function($) {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD
+        define(['jquery'], factory);
+    } else if (typeof exports === 'object') {
+        // Node, CommonJS-like
+        module.exports = factory(require('jquery'));
+    } else {
+        // Browser globals (root is window)
+        root.returnExports = factory(root.jQuery);
+    }
+}(this, function($) {
 
     $.fn.onScreen = function(options) {
-        
+
         var params = {
             container: window,
             direction: 'vertical',
@@ -242,21 +253,7 @@
             if (!containerIsWindow) {
                 $(window).on('resize.onScreen', checkPos);
             }
-
-            // Module support
-            if (typeof module === 'object' && module && typeof module.exports === 'object') {
-                // Node.js module pattern
-                module.exports = jQuery;
-            } else {
-                // AMD
-                if (typeof define === 'function' && define.amd) {
-                    define('jquery-onscreen', [], function() {
-                        return jQuery;
-                    });
-                }
-            }
-
         });
     };
 
-})(jQuery);
+}));
